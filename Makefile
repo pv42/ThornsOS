@@ -1,27 +1,14 @@
 AS_PARAMS = --32
 LD_PARAMS = -melf_i386
-GPP_PARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -fpermissive
+GPP_PARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore 
 
-objects = loader.o kernel.o
+objects = interrupts.o interruptstubs.o port.o loader.o gdt.o kernel.o 
 
 %.o: %.cpp
 	g++ $(GPP_PARAMS) -o $@ -c $<
 
 %.o: %.s
 	as $(AS_PARAMS) -o $@ -c $<
-
-clean: 
-	rm -f *.o
-	rm -f kernel.bin
-	rm -f kernel.iso
-	rm -rf iso
-
-kernel.bin: linker.ld $(objects)
-	ld $(LD_PARAMS) -T $< -o $@ $(objects)
-
-install: kernel.bin
-	echo "!WARNING YOU ARE INSATLLING AN OPERATION SYSTEM KERNEL!"
-	sudo cp $< /boot/myOSkernel.bin
 
 kernel.iso: kernel.bin
 	mkdir iso
@@ -38,4 +25,21 @@ kernel.iso: kernel.bin
 	echo '    boot' >> iso/boot/grub/grub.cfg
 	echo '}' >> iso/boot/grub/grub.cfg
 	grub-mkrescue --output=$@ iso
+	rm -rf iso
+
+kernel.bin: linker.ld $(objects)
+	ld $(LD_PARAMS) -T $< -o $@ $(objects)
+
+install: kernel.bin
+	@echo "!WARNING YOU ARE INSATLLING AN OPERATION SYSTEM KERNEL!"
+	sudo cp $< /boot/ThornsOSkernel.bin
+
+vm: kernel.iso
+	(killall VirtualBox && sleep 1) || true
+	VirtualBox --startvm "MYOS" &
+
+
+.PHONY: clean
+clean: 
+	rm -f $(objects) kernel.bin kernel.iso
 	rm -rf iso
