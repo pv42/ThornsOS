@@ -14,7 +14,7 @@
 
 loader:
 	mov $kernel_stack, %esp
-	#call callConstructors needed for some c++ constructors but crashes virtbox
+	call callConstructors #needed for some c++ constructors but crashes virtbox
 	push %eax
 	push %ebx
 	call init

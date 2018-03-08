@@ -1,6 +1,6 @@
 AS_PARAMS = --32
 LD_PARAMS = -melf_i386
-GPP_PARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore 
+GPP_PARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings
 
 objects = interrupts.o interruptstubs.o port.o loader.o gdt.o kernel.o 
 
@@ -19,7 +19,7 @@ kernel.iso: kernel.bin
 	echo '# MYOS ENTRY START #' >> iso/boot/grub/grub.cfg
 	echo '####################' >> iso/boot/grub/grub.cfg
 	echo 'set default=0' >> iso/boot/grub/grub.cfg
-	echo 'set timeout=10' >> iso/boot/grub/grub.cfg
+	echo 'set timeout=5' >> iso/boot/grub/grub.cfg
 	echo 'menuentry "myOS 0.1" {' >> iso/boot/grub/grub.cfg
 	echo '    multiboot /boot/myOSkernel.bin' >> iso/boot/grub/grub.cfg
 	echo '    boot' >> iso/boot/grub/grub.cfg

@@ -1,7 +1,6 @@
 #define VERSION 0.1
 #include "types.h"
 #include "gdt.h"
-#include "port.h"
 #include "interrupts.h"
 
 //prints
@@ -14,6 +13,15 @@ void clrScrn() {
         for(int x = 0; x < 80; x++) {
             Video_Memory[80*y + x] = (Video_Memory[80*y + x] & 0xff00) | ' ';
         }
+    }
+}
+
+void str(int number, char* target, int size) {
+    int i = 0;
+    while(number!=0) {
+        target[size-i] = '0' + number%10;
+        number/=10;
+        i++;
     }
 }
 
@@ -70,13 +78,13 @@ extern "C" void init(void* mbs_info, uint32_t mb_magic) {
     
     GlobalDescriptorTable gdt;
     InterruptManager interruptManager(&gdt);
-    //hm inits
+    //hw inits
     interruptManager.activate();
 
-
     //loadin done
-    wait(100000);
-        print(">");
-    
+    //while(1) {
+    //	wait(100000);
+    //	print(">");
+    //}
     while(1);
 }

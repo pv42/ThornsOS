@@ -7,7 +7,7 @@ Port::Port(uint16_t portnumber) {
 
 Port::~Port() {}
 
-// 8bit
+// 8 
 
 Port8::Port8(uint16_t portnumber) : Port(portnumber) {}
 
@@ -24,18 +24,19 @@ uint8_t Port8::read() {
 }
 
 
-//8bit slow
+//8 slow
 
 Port8Slow::Port8Slow(uint16_t portnumber) : Port8(portnumber) {}
 
 Port8Slow::~Port8Slow() {}
 
 void Port8Slow::write(uint8_t data) {
-	__asm__ volatile("outb %0, %1\njmp 1f\n1:jmp 1f\n1:" : : "a" (data), "Nd" (portnumber)); //2 useless instructions to wait unitl write is done
+	__asm__ volatile("outb %0, %1\njmp 1f\n1: jmp 1f\n1: " : : "a" (data), "Nd" (portnumber)); //2 useless instructions to wait unitl write is done
+	        
 }
 
 
-//16bit
+//16
 Port16::Port16(uint16_t portnumber) : Port(portnumber) {}
 
 Port16::~Port16()  {}
@@ -51,7 +52,7 @@ uint16_t Port16::read() {
 }
 
 
-//32bit
+//32
 Port32::Port32(uint16_t portnumber) : Port(portnumber) {}
 
 Port32::~Port32() {}
