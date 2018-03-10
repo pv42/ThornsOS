@@ -3,6 +3,7 @@
 #include "gdt.h"
 #include "interrupts.h"
 #include "scr_text.h"
+#include "keyboard.h"
 //prints
 
 
@@ -32,6 +33,7 @@ extern "C" void init(void* mbs_info, uint32_t mb_magic) {
     GlobalDescriptorTable gdt;
     InterruptManager interruptManager(&gdt);
     //hw inits
+    KeyboardDriver keyboardDriver(&interruptManager);
     interruptManager.activate();
 
     //loadin done

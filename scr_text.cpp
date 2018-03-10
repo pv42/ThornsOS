@@ -10,12 +10,18 @@ void clrScrn() {
     }
 }
 
-void str(int number, char* target, int size) {
-    int i = 0;
-    while(number!=0) {
+void dec_str(int number, char* target, int size) {
+    for(int i = 0; number!=0 && i <= size; i++) {
         target[size-i] = '0' + number%10;
         number/=10;
-        i++;
+    }
+}
+
+void hex_str(int number, char* target, int size) {
+    char* hex = "0123456789abcdef";
+    for(int i = 0; number!=0 && i <= size; i++) {
+        target[size-i] = '0' + number&0xf;
+        number/=16;
     }
 }
 
@@ -38,6 +44,7 @@ void print(char* str) {
             Video_Memory[80*y + x] = color | (str[i]);
             x++;
         }
+        //display is limited to 80x25
         if(x >= 80) {
             x = 0;
             y++;

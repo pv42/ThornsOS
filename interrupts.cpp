@@ -89,13 +89,13 @@ uint32_t InterruptManager::handleInterrupt(uint8_t interrupt, uint32_t esp) {
     return esp;
 }
 uint32_t InterruptManager::doHandleInterrupt(uint8_t interrupt, uint32_t esp) {
-	if(interrupt == 0x20) print("TI "); // timer interrupt
-	if(interrupt != 0x20) print("NTI "); // timer interrupt	
 	if(handlers[interrupt] != 0) {
 		esp = handlers[interrupt]->handleInterrupt(esp);
 	} else {
-		if(0) {;} else {
-			char* txt = "UNHANDLED INTERRUPT 0x??..";
+		if(interrupt == 0x20) {
+			//print("ti  "); // timer interrupt
+		} else {
+			char* txt = "UNHANDLED INTERRUPT 0x?? ";
 			char* hex = "0123456789abcdef";
 			txt[22] = hex[(interrupt>>4) & 0x0f];
 			txt[23] = hex[interrupt & 0x0f];
