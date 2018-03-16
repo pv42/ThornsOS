@@ -8,6 +8,7 @@
 class KeyboardDriver: public InterruptHandler {
 	Port8 dataPort;
 	Port8 commandPort;
+	bool keyDown[0x80];
 public:
 	KeyboardDriver(InterruptManager* manager);
 	~KeyboardDriver();
