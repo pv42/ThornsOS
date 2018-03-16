@@ -2,6 +2,7 @@
 #include "types.h"
 #include "gdt.h"
 #include "interrupts.h"
+#include "driver.h"
 #include "scr_text.h"
 #include "keyboard.h"
 //prints
@@ -29,11 +30,19 @@ extern "C" void init(void* mbs_info, uint32_t mb_magic) {
     print("ThornsOS Version 0.1 \n");
     print("\n");
     print("(c) pv42\n");
+    print("\n");
     
     GlobalDescriptorTable gdt;
     InterruptManager interruptManager(&gdt);
-    //hw inits
+    print("Initializing Hardware, Stage 0\n");
+
+    DriverManager driverManager;
     KeyboardDriver keyboardDriver(&interruptManager);
+    driverManager.addDriver(&keyboardDriver);
+    print("Initializing Hardware, Stage 1\n");
+    driverManager.activateAll();
+
+    print("Initializing Hardware, Stage 2\n");
     interruptManager.activate();
 
     //loadin done

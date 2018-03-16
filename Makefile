@@ -2,7 +2,12 @@ AS_PARAMS = --32
 LD_PARAMS = -melf_i386
 GPP_PARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings
 
-objects = interrupts.o interruptstubs.o port.o loader.o gdt.o kernel.o scr_text.o keyboard.o
+objects = interrupts.o driver.o interruptstubs.o port.o loader.o gdt.o kernel.o scr_text.o keyboard.o
+OBJ_PATH = obj/
+SRC_PATH = src/
+INCLUDE_PATH = include/
+
+
 
 %.o: %.cpp
 	g++ $(GPP_PARAMS) -o $@ -c $<

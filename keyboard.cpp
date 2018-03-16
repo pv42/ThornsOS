@@ -29,7 +29,14 @@ const uint8_t KEY_BINDING_QWERTY_UPR[0x80] = {
 	'?','?','?','?','?','?','?' 
 };
 
-KeyboardDriver::KeyboardDriver(InterruptManager* manager) : InterruptHandler(0x21, manager), dataPort(0x60),commandPort(0x64){
+KeyboardDriver::KeyboardDriver(InterruptManager* manager) : InterruptHandler(0x21, manager), dataPort(0x60),commandPort(0x64)
+{}
+
+
+KeyboardDriver::~KeyboardDriver()
+{}
+
+void KeyboardDriver::activate() {
 	while(commandPort.read() & 0x1) dataPort.read();
 	commandPort.write(0xae); //activate interrupts
 	commandPort.write(0x20); //gives current state
@@ -38,10 +45,8 @@ KeyboardDriver::KeyboardDriver(InterruptManager* manager) : InterruptHandler(0x2
 	dataPort.write(status);
 	dataPort.write(0xf4); //activate keyboard
 	print("KeyboardDriver loaded.\n");
-}
 
-KeyboardDriver::~KeyboardDriver()
-{}
+}
 
 uint32_t KeyboardDriver::handleInterrupt(uint32_t esp) {
 	uint8_t key = dataPort.read();
